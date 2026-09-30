@@ -29,7 +29,7 @@ export function Header() {
         solid ? "border-b border-white/[0.06] bg-ink/80 backdrop-blur-xl" : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 max-[359px]:px-3 sm:px-6 lg:px-8">
         <a href="#top" aria-label={`${site.name} — back to top`} className="rounded-md">
           <Logo />
         </a>
@@ -50,12 +50,12 @@ export function Header() {
           </PhoneLink>
           <PhoneLink
             source="header_icon"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-bone md:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-bone max-[359px]:hidden md:hidden"
           >
             <Phone width={18} height={18} />
             <span className="sr-only">Call {site.phoneDisplay}</span>
           </PhoneLink>
-          <EstimateButton source="header" className="btn btn-primary !min-h-10 !rounded-full !px-4 text-[0.82rem]">
+          <EstimateButton source="header" className="btn btn-primary !min-h-10 !rounded-full !px-4 whitespace-nowrap text-[0.82rem] max-[359px]:!px-3 max-[359px]:text-[0.75rem]">
             Free Estimate
           </EstimateButton>
         </div>

@@ -10,15 +10,18 @@ const cinzel = Cinzel({ subsets: ["latin"], weight: ["600", "700"], variable: "-
 const title = `${site.name} | Epoxy & Polyaspartic Floor Coatings in Bradenton, FL`;
 const description =
   "Garage floors, pool decks, patios, driveways and commercial floor coatings in Bradenton, Sarasota & surrounding areas. Family owned, BBB accredited, 5.0 rating from 148 reviews. Get a free estimate.";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? site.url;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
   title,
   description,
   applicationName: site.name,
+  alternates: { canonical: "/" },
   openGraph: {
     title,
     description,
+    url: siteUrl,
     type: "website",
     locale: "en_US",
     siteName: site.name,

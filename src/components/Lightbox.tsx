@@ -51,7 +51,7 @@ export function Lightbox({ items, index: start, onClose }: { items: LightboxItem
       role="dialog"
       aria-modal="true"
       aria-label="Project photo viewer"
-      className="fixed inset-0 z-[70] flex flex-col bg-black/95"
+      className="fixed inset-0 z-[70] flex flex-col bg-black"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2 }}

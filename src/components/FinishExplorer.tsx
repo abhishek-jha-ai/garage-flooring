@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { finishes, flakeBlends } from "@/lib/content";
+import { finishes, flakeBlends, type Finish } from "@/lib/content";
 import { trackEvent } from "@/lib/analytics";
 import { EstimateButton } from "./EstimateContext";
 import { ArrowRight, Check } from "./icons";
@@ -20,9 +20,9 @@ export function FinishExplorer() {
           Pick a finish. See it on the floor.
         </h2>
 
-        <div className="mt-8 grid gap-6 sm:mt-10 md:grid-cols-[minmax(0,26rem)_1fr] md:gap-10 lg:gap-16">
-          {/* Floor preview */}
-          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-slate ring-1 ring-white/10 md:aspect-[3/4]">
+        <div className="mt-8 grid grid-cols-[minmax(0,44%)_1fr] gap-4 sm:mt-10 sm:gap-8 md:grid-cols-[18rem_1fr] lg:grid-cols-[20rem_1fr] lg:gap-14">
+          {/* Floor preview — tall crop keeps the photo near native resolution */}
+          <div className="relative aspect-[1/2] self-start overflow-hidden rounded-3xl bg-slate ring-1 ring-white/10">
             <AnimatePresence initial={false}>
               <motion.div
                 key={finish.id}
@@ -32,18 +32,18 @@ export function FinishExplorer() {
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="absolute inset-0"
               >
-                <Image src={finish.floor} alt={`${finish.name} flake finish on a garage floor`} fill sizes="(min-width:768px) 26rem, 100vw" className="object-cover object-bottom" />
+                <Image src={finish.floor} alt={`${finish.name} flake finish on a garage floor`} fill sizes="(min-width:1024px) 20rem, (min-width:768px) 18rem, 44vw" className="object-cover" />
               </motion.div>
             </AnimatePresence>
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 via-ink/40 to-transparent p-5 pt-16">
-              <p className="font-display text-2xl font-extrabold uppercase tracking-wide">{finish.name}</p>
-              <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] text-mist">{finish.tone}</p>
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 via-ink/40 to-transparent p-4 pt-14 sm:p-5">
+              <p className="font-display text-xl font-extrabold uppercase tracking-wide sm:text-2xl">{finish.name}</p>
+              <p className="mt-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-mist sm:text-xs">{finish.tone}</p>
             </div>
           </div>
 
           {/* Controls */}
-          <div className="flex flex-col">
-            <ul role="radiogroup" aria-label="Floor finish" className="grid grid-cols-5 gap-2 sm:gap-3">
+          <div className="flex min-w-0 flex-col">
+            <ul role="radiogroup" aria-label="Floor finish" className="grid gap-2 sm:gap-3 lg:grid-cols-2">
               {finishes.map((f) => {
                 const on = f.id === id;
                 return (
@@ -56,59 +56,66 @@ export function FinishExplorer() {
                         setId(f.id);
                         trackEvent("finish_selected", { finish: f.id });
                       }}
-                      className="group block w-full text-center"
+                      className={`flex w-full items-center gap-3 rounded-2xl border p-1.5 pr-3 text-left transition sm:p-2 sm:pr-4 ${
+                        on ? "border-bone bg-white/[0.07]" : "border-white/[0.08] hover:border-white/30"
+                      }`}
                     >
-                      <span
-                        className={`relative block aspect-square overflow-hidden rounded-xl ring-offset-2 ring-offset-ink transition-all sm:rounded-2xl ${
-                          on ? "ring-2 ring-bone" : "ring-1 ring-white/10 group-hover:ring-white/40"
-                        }`}
-                      >
-                        <Image src={f.swatch} alt="" fill sizes="120px" className="object-cover" />
-                        {on && (
-                          <span className="absolute inset-0 grid place-items-center bg-ink/25">
-                            <span className="grid h-6 w-6 place-items-center rounded-full bg-bone text-ink">
-                              <Check width={14} height={14} strokeWidth={3} />
-                            </span>
-                          </span>
-                        )}
+                      <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl sm:h-16 sm:w-16">
+                        <Image src={f.swatch} alt="" fill sizes="64px" className="object-cover" />
                       </span>
-                      <span className={`mt-2 block text-[0.68rem] font-bold uppercase tracking-[0.1em] sm:text-xs ${on ? "text-bone" : "text-fog"}`}>
-                        {f.name}
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-display text-sm font-bold uppercase tracking-wide sm:text-base">{f.name}</span>
+                        <span className="hidden truncate text-xs text-fog sm:block">{f.tone}</span>
                       </span>
+                      {on && (
+                        <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-bone text-ink">
+                          <Check width={12} height={12} strokeWidth={3} />
+                        </span>
+                      )}
                     </button>
                   </li>
                 );
               })}
             </ul>
 
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.p
-                key={finish.id}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="mt-7 text-lg leading-relaxed text-bone sm:text-xl"
-              >
-                {finish.description}
-              </motion.p>
-            </AnimatePresence>
-
-            <div className="mt-6">
-              <EstimateButton source="finish_explorer" finish={finish.name} className="btn btn-primary w-full sm:w-auto sm:px-8">
-                Get This Look <ArrowRight width={18} height={18} />
-              </EstimateButton>
-            </div>
-
-            <div className="mt-8 border-t border-white/[0.07] pt-6">
-              <p className="text-sm font-semibold text-bone">{flakeBlends.length}+ flake blends available</p>
-              <p className="mt-1.5 text-sm leading-relaxed text-fog">
-                {flakeBlends.slice(0, 8).join(" · ")} and more. We’ll bring real samples to your estimate.
-              </p>
+            <div className="mt-6 hidden md:block">
+              <FinishDetails finish={finish} />
             </div>
           </div>
         </div>
+
+        <div className="mt-6 md:hidden">
+          <FinishDetails finish={finish} />
+        </div>
       </div>
     </section>
+  );
+}
+
+function FinishDetails({ finish }: { finish: Finish }) {
+  return (
+    <>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.p
+          key={finish.id}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="text-lg leading-relaxed text-bone sm:text-xl"
+        >
+          {finish.description}
+        </motion.p>
+      </AnimatePresence>
+      <EstimateButton source="finish_explorer" finish={finish.name} className="btn btn-primary mt-5 w-full sm:w-auto sm:px-8">
+        Get This Look <ArrowRight width={18} height={18} />
+      </EstimateButton>
+      <div className="mt-7 border-t border-white/[0.07] pt-5">
+        <p className="text-sm font-semibold text-bone">{flakeBlends.length}+ flake blends available</p>
+        <p className="mt-1.5 text-sm leading-relaxed text-fog">
+          {flakeBlends.slice(0, 8).join(" · ")} and more. We’ll bring real samples to your estimate.
+        </p>
+      </div>
+    </>
   );
 }

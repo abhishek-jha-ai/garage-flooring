@@ -19,7 +19,8 @@ export const site = {
     instagram: "https://www.instagram.com/titangarageofficial",
     facebook: "https://www.facebook.com/titangarageofficial",
   },
-  url: "https://titangarage.org",
+  // Override with NEXT_PUBLIC_SITE_URL when the site is connected to its final domain.
+  url: "https://garage-flooring-two.vercel.app",
 } as const;
 
 export const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";

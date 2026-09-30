@@ -14,8 +14,8 @@ export function Hero() {
         sizes="100vw"
         className="-z-20 object-cover object-[28%_center] md:object-center"
       />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/70 to-ink/10" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/70 via-transparent to-transparent md:from-ink/80" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink from-[8%] via-ink/65 via-[45%] to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/40 via-transparent to-transparent md:from-ink/80" />
       <div className="absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-ink/70 to-transparent" />
 
       {demoMode && (
@@ -24,10 +24,10 @@ export function Hero() {
         </p>
       )}
 
-      <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-32 sm:px-6 md:pb-20 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-7 pt-40 sm:px-6 md:pb-20 lg:px-8">
         <div className="max-w-2xl">
-          <p className="eyebrow mb-4 !text-mist">{site.name}</p>
-          <h1 id="hero-title" className="headline text-[2.6rem] sm:text-6xl lg:text-7xl">
+          <p className="eyebrow mb-3 !text-mist">{site.name}</p>
+          <h1 id="hero-title" className="headline text-[2.35rem] sm:text-6xl lg:text-7xl">
             Epoxy &amp; Polyaspartic Floor Coatings
           </h1>
           <p className="mt-4 text-base font-medium tracking-wide text-mist sm:text-lg">{site.serviceArea}</p>

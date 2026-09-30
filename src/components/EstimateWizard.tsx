@@ -63,6 +63,11 @@ export function EstimateWizard() {
     setStatus("idle");
   }, [isOpen, prefill]);
 
+  const update = (field: keyof Contact, value: string) => {
+    setContact((c) => ({ ...c, [field]: value }));
+    if (errors[field]) setErrors((e) => ({ ...e, [field]: undefined }));
+  };
+
   const close = () => {
     if (status !== "done") trackEvent("estimate_abandoned", { step: step + 1 });
     closeEstimate();
@@ -168,7 +173,7 @@ export function EstimateWizard() {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 380, damping: 40 }}
-            className="relative flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-[1.75rem] border border-white/10 bg-coal shadow-2xl sm:max-h-[88vh] sm:max-w-lg sm:rounded-[1.75rem]"
+            className="relative flex max-h-[94dvh] min-h-[78dvh] w-full flex-col overflow-hidden rounded-t-[1.75rem] border border-white/10 bg-coal shadow-2xl sm:max-h-[88vh] sm:min-h-0 sm:max-w-lg sm:rounded-[1.75rem]"
           >
             {/* Top bar */}
             <div className="flex items-center justify-between gap-3 px-4 pt-3 sm:px-6 sm:pt-5">
@@ -277,10 +282,10 @@ export function EstimateWizard() {
                         ))}
                       </ul>
                       <div className="mt-5 grid grid-cols-2 gap-3">
-                        <Field className="col-span-2" label="Name" name="name" autoComplete="name" value={contact.name} error={errors.name} onChange={(v) => setContact({ ...contact, name: v })} autoFocus />
-                        <Field className="col-span-2" label="Phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" value={contact.phone} error={errors.phone} onChange={(v) => setContact({ ...contact, phone: formatPhone(v) })} />
-                        <Field className="col-span-2 sm:col-span-1" label="Email" name="email" type="email" inputMode="email" autoComplete="email" value={contact.email} error={errors.email} onChange={(v) => setContact({ ...contact, email: v.trim() })} />
-                        <Field className="col-span-2 sm:col-span-1" label="ZIP code" name="zip" inputMode="numeric" autoComplete="postal-code" value={contact.zip} error={errors.zip} onChange={(v) => setContact({ ...contact, zip: v.replace(/\D/g, "").slice(0, 5) })} />
+                        <Field className="col-span-2" label="Name" name="name" autoComplete="name" value={contact.name} error={errors.name} onChange={(v) => update("name", v)} autoFocus />
+                        <Field className="col-span-2" label="Phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" value={contact.phone} error={errors.phone} onChange={(v) => update("phone", formatPhone(v))} />
+                        <Field className="col-span-2 sm:col-span-1" label="Email" name="email" type="email" inputMode="email" autoComplete="email" value={contact.email} error={errors.email} onChange={(v) => update("email", v.trim())} />
+                        <Field className="col-span-2 sm:col-span-1" label="ZIP code" name="zip" inputMode="numeric" autoComplete="postal-code" value={contact.zip} error={errors.zip} onChange={(v) => update("zip", v.replace(/\D/g, "").slice(0, 5))} />
                       </div>
                       <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
                       {status === "error" && (

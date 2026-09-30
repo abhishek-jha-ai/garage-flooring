@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ProjectType } from "@/lib/content";
 import { trackEvent } from "@/lib/analytics";
 
@@ -14,6 +14,7 @@ type Ctx = {
 };
 
 const EstimateCtx = createContext<Ctx | null>(null);
+export const ESTIMATE_HASH = "estimate";
 
 export function EstimateProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setOpen] = useState(false);
@@ -25,6 +26,19 @@ export function EstimateProvider({ children }: { children: React.ReactNode }) {
     trackEvent("estimate_started", { source: p.source, project_type: p.projectType, finish: p.finish });
   }, []);
   const closeEstimate = useCallback(() => setOpen(false), []);
+
+  // Taps that land before hydration fall back to the #estimate link; pick them up here.
+  // Also makes `yoursite.com/#estimate` a deep link for ads.
+  useEffect(() => {
+    const check = () => {
+      if (window.location.hash !== `#${ESTIMATE_HASH}`) return;
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+      openEstimate({ source: "link" });
+    };
+    check();
+    window.addEventListener("hashchange", check);
+    return () => window.removeEventListener("hashchange", check);
+  }, [openEstimate]);
 
   const value = useMemo(() => ({ isOpen, prefill, openEstimate, closeEstimate }), [isOpen, prefill, openEstimate, closeEstimate]);
   return <EstimateCtx.Provider value={value}>{children}</EstimateCtx.Provider>;
@@ -46,8 +60,16 @@ export function EstimateButton({
 }: EstimatePrefill & { className?: string; children: React.ReactNode }) {
   const { openEstimate } = useEstimate();
   return (
-    <button type="button" className={className} onClick={() => openEstimate({ source, projectType, finish })}>
+    <a
+      href={`#${ESTIMATE_HASH}`}
+      role="button"
+      className={className}
+      onClick={(e) => {
+        e.preventDefault();
+        openEstimate({ source, projectType, finish });
+      }}
+    >
       {children}
-    </button>
+    </a>
   );
 }
