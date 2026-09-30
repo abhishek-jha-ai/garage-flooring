@@ -38,7 +38,7 @@ export function ProjectExplorer() {
 
       {/* Category picker — horizontal swipe on mobile, grid on desktop */}
       <div className="no-scrollbar mt-7 overflow-x-auto sm:mt-10">
-        <ul
+        <div
           role="radiogroup"
           aria-label="Project type"
           className="mx-auto flex w-max gap-2.5 px-4 sm:px-6 lg:grid lg:w-auto lg:max-w-7xl lg:grid-cols-6 lg:gap-4 lg:px-8"
@@ -46,7 +46,7 @@ export function ProjectExplorer() {
           {projectCategories.map((c) => {
             const selected = c.id === typeId;
             return (
-              <li key={c.id}>
+              <div key={c.id}>
                 <button
                   type="button"
                   role="radio"
@@ -73,10 +73,10 @@ export function ProjectExplorer() {
                     <span className="absolute inset-x-3 bottom-3 font-display text-sm font-bold uppercase tracking-wide">{c.label}</span>
                   </span>
                 </button>
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
 
       <div className="mx-auto mt-6 max-w-7xl px-4 sm:mt-8 sm:px-6 lg:grid lg:grid-cols-[1fr_22rem] lg:gap-8 lg:px-8">

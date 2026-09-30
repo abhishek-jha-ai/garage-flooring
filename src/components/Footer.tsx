@@ -84,7 +84,7 @@ export function Footer() {
       </div>
       <div className="mx-auto mt-10 flex max-w-7xl flex-col gap-2 border-t border-white/[0.06] px-4 pt-6 text-xs sm:flex-row sm:justify-between sm:px-6 lg:px-8">
         <p>© {new Date().getFullYear()} {site.name}. Family owned &amp; operated. BBB Accredited.</p>
-        {demoMode && <p className="text-fog/70">Interactive concept prepared for {site.shortName}</p>}
+        {demoMode && <p className="text-fog">Interactive concept prepared for {site.shortName}</p>}
       </div>
     </footer>
   );

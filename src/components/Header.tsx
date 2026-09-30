@@ -30,7 +30,7 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 max-[359px]:px-3 sm:px-6 lg:px-8">
-        <a href="#top" aria-label={`${site.name} — back to top`} className="rounded-md">
+        <a href="#top" className="rounded-md">
           <Logo />
         </a>
         <nav aria-label="Primary" className="hidden items-center gap-8 text-sm font-medium text-mist lg:flex">

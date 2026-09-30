@@ -43,11 +43,11 @@ export function FinishExplorer() {
 
           {/* Controls */}
           <div className="flex min-w-0 flex-col">
-            <ul role="radiogroup" aria-label="Floor finish" className="grid gap-2 sm:gap-3 lg:grid-cols-2">
+            <div role="radiogroup" aria-label="Floor finish" className="grid gap-2 sm:gap-3 lg:grid-cols-2">
               {finishes.map((f) => {
                 const on = f.id === id;
                 return (
-                  <li key={f.id}>
+                  <div key={f.id}>
                     <button
                       type="button"
                       role="radio"
@@ -73,10 +73,10 @@ export function FinishExplorer() {
                         </span>
                       )}
                     </button>
-                  </li>
+                  </div>
                 );
               })}
-            </ul>
+            </div>
 
             <div className="mt-6 hidden md:block">
               <FinishDetails finish={finish} />
